@@ -1,0 +1,9 @@
+{
+    "name": "NullNote",
+    "description": "Replace your new page with an absolute basic notepad",
+    "version": "1.0",
+    "manifest_version": 3,
+    "chrome_url_overrides": {
+        "newtab" : "note.html"
+    }
+}
