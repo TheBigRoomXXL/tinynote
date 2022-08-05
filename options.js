@@ -1,9 +1,20 @@
-function save_options() {
-  var bg_color = document.getElementById('bg_color').value;
-  var ft_color = document.getElementById('ft_color').value;
-  chrome.storage.sync.set({
-    bg_color: bg_color,
-    ft_color: ft_color,
-  })
-}
+let  bg_color_element = document.getElementById('bg_color')
+let  ft_color_element = document.getElementById('ft_color')
 
+window.addEventListener("load", set_value_from_store, false);
+
+
+bg_color_element.addEventListener('input', (event) => {
+  localStorage.setItem('bg_color', event.target.value);
+});
+
+ft_color_element.addEventListener('input', (event) => {
+  localStorage.setItem('ft_color', event.target.value);
+});
+
+function set_value_from_store(){
+  console.log("here")
+  bg_color_element.value = localStorage.getItem('bg_color');
+  ft_color_element.value = localStorage.getItem('ft_color');
+
+}

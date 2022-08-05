@@ -1,15 +1,15 @@
-
 const text_input = document.getElementById("note")
+window.addEventListener("load", set_value_from_store, false);
 
-text_input.value = localStorage.getItem('nullnote');
 
 text_input.addEventListener('keyup', (event) => {
     const text = document.getElementById('note').value;
-    localStorage.setItem('nullnote', text);
+    localStorage.setItem('notepad', text);
   });
 
+
+  // Manage tab and untab
 text_input.addEventListener('keydown', function(e) {
-  console.log( )
   if (e.shiftKey && e.key == 'Tab'){
     //Define position
     e.preventDefault();
@@ -37,16 +37,18 @@ text_input.addEventListener('keydown', function(e) {
   }
 });
 
+
 window.addEventListener('storage', function(e) {
-  text_input.value = localStorage.getItem('nullnote');
+  set_value_from_store()
 });
 
-chrome.storage.onChanged.addListener(function (changes, namespace) {
-  for (let [key, { oldValue, newValue }] of Object.entries(changes)) {
-    console.log(
-      `Storage key "${key}" in namespace "${namespace}" changed.`,
-      `Old value was "${oldValue}", new value is "${newValue}".`
-    );
-  }
-});
 
+
+function set_value_from_store(){
+  console.log("here")
+  text_input.value = localStorage.getItem('notepad');
+  document.body.style.background = localStorage.getItem('bg_color');
+  text_input.style.background = localStorage.getItem('bg_color');
+  text_input.style.color = localStorage.getItem('ft_color');
+  
+}
