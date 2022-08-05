@@ -3,6 +3,7 @@
   "description": "Replace your new page with a minimalist notepad",
   "version": "1.0",
   "manifest_version": 3,
+  "icons": { "47": "notepad.png"},
   "chrome_url_overrides": {
     "newtab" : "note.html"
   },
