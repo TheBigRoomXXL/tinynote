@@ -1,14 +1,20 @@
 {
-  "name": "NewPageNotepad",
-  "description": "Replace your new page with a minimalist notepad",
-  "version": "1.0",
+  "name": "tinynote",
+  "description": "Replace your new page with a minimalist note taking page",
+  "version": "1.1",
   "manifest_version": 3,
-  "icons": { "47": "notepad.png"},
-  "chrome_url_overrides": {
-    "newtab" : "note.html"
+  "icons": {
+    "47": "notepad.png"
   },
-  "action": {
-    "default_popup": "options.html"
-  }, 
-  "permissions": [ "storage" ]
+  "browser_specific_settings": {
+    "gecko": {
+      "id": "seb.lovergne@gmail.com"
+    }
+  },
+  "chrome_url_overrides": {
+    "newtab": "note.html"
+  },
+  "permissions": [
+    "storage"
+  ]
 }

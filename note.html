@@ -1,29 +1,53 @@
+<!DOCTYPE html>
 <html>
-  <head>
-    <meta charset="utf-8">
-    <title>New page</title>
-  </head>
+
+<head>
+  <meta charset="utf-8">
+  <title>tinynote</title>
   <style>
+    :root {
+      --color-text: #cfcfcf;
+      --color-bg: #1D1F21;
+      color-scheme: dark light;
+    }
+
+    @media (prefers-color-scheme: light) {
+      :root {
+        --color-text: #444;
+        --color-bg: white;
+      }
+    }
+
+    html {
+      color: var(--color-text);
+      background-color: var(--color-bg);
+    }
+
     body {
-        background-color : #35363a;
+      margin: 0;
+      padding: 1em;
     }
-    textarea, textarea:focus {
-        border-style: none;
-        resize: none;
-        outline : none;
-        height: 100%;
-        width: 100%;
-        padding :1em;
-        font-size: 15px;
-        color : fff;
-        background-color : #35363a;
+
+    textarea,
+    textarea:focus {
+      color: var(--color-text);
+      background-color: var(--color-bg);
+      border-style: none;
+      resize: none;
+      outline: none;
+      width: 100%;
+      min-height: 96vh;
+      font-family: ui-monospace, 'Cascadia Code', 'Source Code Pro', "Menlo",
+        "Consolas", 'DejaVu Sans Mono', monospace;
+      font-size: 14px;
     }
-    
   </style>
 
+</head>
+
+<body>
   <textarea id="note" name="note" label="note" spellcheck="false"></textarea>
   <script type="text/javascript" src="note.js"></script>
+</body>
+
 </html>
-
-
-
