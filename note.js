@@ -1,43 +1,59 @@
-const text_input = document.getElementById("note")
-
-window.addEventListener('load', function (e) {
-  text_input.value = localStorage.getItem('notepad');
-});
-
-window.addEventListener('storage', function (e) {
-  text_input.value = localStorage.getItem('notepad');
-});
-
-text_input.addEventListener('keyup', (event) => {
-  const text = document.getElementById('note').value;
-  localStorage.setItem('notepad', text);
-});
-
-
-// Manage tab and untab
-text_input.addEventListener('keydown', function (e) {
-  if (e.shiftKey && e.key == 'Tab') {
-    e.preventDefault();
-    var start = this.selectionStart;
-    var end = this.selectionEnd;
-
-    //Edit text
-    this.value = this.value.substring(0, start - 1) + this.value.substring(start - 1, end + 1).replace(/\t/g, '') + this.value.substring(end + 1);
-
-    // put caret at right position again
-    this.selectionStart = start - 1
-    this.selectionEnd = start - 1
+// Configure Monaco loader
+require.config({
+  paths: {
+    vs: "./monaco-editor/0.51.0/min/vs" // local (no worker)
+    // vs: "https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.51.0/min/vs" // CDN
 
   }
-  else if (e.key == 'Tab') {
-    e.preventDefault();
-    var start = this.selectionStart;
-    var end = this.selectionEnd;
+});
 
-    this.value = this.value.substring(0, start) + "\t" + this.value.substring(end);
+// Match css theme to monaco theme
+function getSystemTheme() {
+  return window.matchMedia("(prefers-color-scheme: dark)").matches ? "vs-dark" : "vs";
+}
 
-    // put caret at right position again
-    this.selectionStart =
-      this.selectionEnd = start + 1;
-  }
+// Get Saved content
+const storageKey = "tinynote";
+const defaultValue = "\n".repeat(42);
+let changing = false;
+
+require(["vs/editor/editor.main"], function () {
+  // Instanciate monaco editor
+  const editor = monaco.editor.create(document.getElementById("editor"), {
+    value: localStorage.getItem(storageKey) || defaultValue,
+    language: "markdown",
+    theme: getSystemTheme(),
+    minimap: { enabled: false },
+    renderWhitespace: true,
+    renderLineHighlight: "none",
+    automaticLayout: true,
+  });
+
+  // Sync change from other tabs
+  window.addEventListener("storage", (e) => {
+    if (e.key !== storageKey || changing) return;
+    console.log("storage");
+    changing = true;
+    editor.setValue(e.newValue || defaultValue);
+    setTimeout(() => {
+      changing = false;
+    }, 1);
+  });
+
+  // Sync change to other tabs
+  editor.getModel().onDidChangeContent(() => {
+    if (changing) return;
+    console.log("onDidChangeContent");
+    changing = true;
+    localStorage.setItem(storageKey, editor.getValue());
+    setTimeout(() => {
+      changing = false;
+    }, 1);
+  });
+
+  // Listen to system theme changes
+  window.matchMedia("(prefers-color-scheme: dark)").addEventListener("change", e => {
+    const newTheme = e.matches ? "vs-dark" : "vs";
+    monaco.editor.setTheme(newTheme);
+  });
 });

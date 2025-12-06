@@ -1,53 +1,33 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 
 <head>
-  <meta charset="utf-8">
+  <meta charset="UTF-8" />
   <title>tinynote</title>
   <style>
-    :root {
-      --color-text: #cfcfcf;
-      --color-bg: #1D1F21;
-      color-scheme: dark light;
-    }
-
-    @media (prefers-color-scheme: light) {
-      :root {
-        --color-text: #444;
-        --color-bg: white;
-      }
-    }
-
-    html {
-      color: var(--color-text);
-      background-color: var(--color-bg);
-    }
-
-    body {
+    html,
+    body,
+    #editor {
       margin: 0;
-      padding: 1em;
-    }
-
-    textarea,
-    textarea:focus {
-      color: var(--color-text);
-      background-color: var(--color-bg);
-      border-style: none;
-      resize: none;
-      outline: none;
+      padding: 0;
       width: 100%;
-      min-height: 96vh;
-      font-family: ui-monospace, 'Cascadia Code', 'Source Code Pro', "Menlo",
-        "Consolas", 'DejaVu Sans Mono', monospace;
-      font-size: 14px;
+      height: 100%;
+      overflow: hidden;
     }
   </style>
+
+  <!-- Load Monaco from local files (no worker) -->
+  <script src="./monaco-editor/0.51.0/min/vs/loader.min.js"></script>
+
+  <!-- Load Monaco from CDN -->
+  <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.51.0/min/vs/loader.min.js"> -->
+  </script>
 
 </head>
 
 <body>
-  <textarea id="note" name="note" label="note" spellcheck="false"></textarea>
-  <script type="text/javascript" src="note.js"></script>
+  <div id="editor"></div>
+  <script src="note.js"></script>
 </body>
 
 </html>
