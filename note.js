@@ -1,9 +1,14 @@
-// Configure Monaco loader
+// Configure Monaco loader to load worker correctly
+window.MonacoEnvironment = {
+  getWorkerUrl: function () {
+    return './monaco-editor/0.51.0/min/vs/base/worker/workerMain.js';
+  }
+};
+
 require.config({
   paths: {
     vs: "./monaco-editor/0.51.0/min/vs" // local (no worker)
     // vs: "https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.51.0/min/vs" // CDN
-
   }
 });
 
