@@ -18,6 +18,9 @@
 
     <!-- Load Monaco from CDN -->
     <script src="./monaco-editor/0.51.0/min/vs/loader.min.js"></script>
+    <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.51.0/min/vs/loader.min.js"> -->
+    </script>
+
 </head>
 
 <body>
@@ -28,19 +31,38 @@
         require.config({
             paths: {
                 vs: "./monaco-editor/0.51.0/min/vs"
+                // vs: "https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.51.0/min/vs"
+
             }
         });
 
-        // Load the editor
+        // Get Saved content
+        const storageKey = "tinynote";
+        const defaultValue = "\n".repeat(42);
+        const saved = localStorage.getItem(storageKey) || defaultValue;
+
         require(["vs/editor/editor.main"], function () {
-            monaco.editor.create(document.getElementById("editor"), {
-                value: "\n".repeat(42),
+            const editor = monaco.editor.create(document.getElementById("editor"), {
+                value: saved,
                 language: "markdown",
                 theme: "vs-dark",
                 minimap: { enabled: false },
                 renderWhitespace: true,
             });
+
+            // Sync change from other tabs
+            window.addEventListener("storage", (e) => {
+                if (e.key !== storageKey) return;
+                editor.setValue(e.newValue || defaultValue);
+            });
+
+            // Sync change to other tabs
+            editor.getModel().onDidChangeContent((event) => {
+                localStorage.setItem(storageKey, editor.getValue());
+            });
         });
+
+
     </script>
 </body>
 
