@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <title>tinynote</title>
+    <style>
+        html,
+        body,
+        #editor {
+            margin: 0;
+            padding: 0;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+        }
+    </style>
+
+    <!-- Load Monaco from CDN -->
+    <script src="./monaco-editor/0.51.0/min/vs/loader.min.js"></script>
+</head>
+
+<body>
+    <div id="editor"></div>
+
+    <script>
+        // Configure Monaco loader
+        require.config({
+            paths: {
+                vs: "./monaco-editor/0.51.0/min/vs"
+            }
+        });
+
+        // Load the editor
+        require(["vs/editor/editor.main"], function () {
+            monaco.editor.create(document.getElementById("editor"), {
+                value: "\n".repeat(42),
+                language: "markdown",
+                theme: "vs-dark",
+                minimap: { enabled: false },
+                renderWhitespace: true,
+            });
+        });
+    </script>
+</body>
+
+</html>
