@@ -36,16 +36,22 @@
             }
         });
 
+        // Match css theme to monaco theme
+        function getSystemTheme() {
+            return window.matchMedia("(prefers-color-scheme: dark)").matches ? "vs-dark" : "vs";
+        }
+
         // Get Saved content
         const storageKey = "tinynote";
         const defaultValue = "\n".repeat(42);
         const saved = localStorage.getItem(storageKey) || defaultValue;
 
         require(["vs/editor/editor.main"], function () {
+            // Instanciate monaco editor
             const editor = monaco.editor.create(document.getElementById("editor"), {
                 value: saved,
                 language: "markdown",
-                theme: "vs-dark",
+                theme: getSystemTheme(),
                 minimap: { enabled: false },
                 renderWhitespace: true,
             });
@@ -59,6 +65,12 @@
             // Sync change to other tabs
             editor.getModel().onDidChangeContent((event) => {
                 localStorage.setItem(storageKey, editor.getValue());
+            });
+
+            // Listen to system theme changes
+            window.matchMedia("(prefers-color-scheme: dark)").addEventListener("change", e => {
+                const newTheme = e.matches ? "vs-dark" : "vs";
+                monaco.editor.setTheme(newTheme);
             });
         });
 
