@@ -29,6 +29,7 @@ require(["vs/editor/editor.main"], function () {
     language: "markdown",
     theme: getSystemTheme(),
     minimap: { enabled: false },
+    padding: { top: 20 },
     renderWhitespace: true,
     renderLineHighlight: "none",
     automaticLayout: true,
